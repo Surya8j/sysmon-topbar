@@ -2,7 +2,7 @@
 
 A lightweight, htop-style system monitor for the GNOME Shell top bar. Built for Pop!_OS.
 
-![GNOME 42+](https://img.shields.io/badge/GNOME-42%20|%2043%20|%2044-blue)
+![GNOME 41+](https://img.shields.io/badge/GNOME-41%20|%2042%20|%2043%20|%2044%20|%2045%20|%2046-blue)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
 ![No sudo](https://img.shields.io/badge/install-no%20sudo-brightgreen)
 
@@ -27,7 +27,7 @@ Swp[||             0M/28.0G ]
 
 ## Requirements
 
-- Pop!_OS 22.04+ (GNOME Shell 42/43/44)
+- Pop!_OS 22.04+ (GNOME Shell 41-46)
 - No sudo required
 
 ## Install
@@ -47,7 +47,14 @@ Restart GNOME Shell:
 
 ```bash
 mkdir -p ~/.local/share/gnome-shell/extensions/sysmon@popbar
-cp sysmon@popbar/* ~/.local/share/gnome-shell/extensions/sysmon@popbar/
+cp sysmon@popbar/metadata.json ~/.local/share/gnome-shell/extensions/sysmon@popbar/
+cp sysmon@popbar/stylesheet.css ~/.local/share/gnome-shell/extensions/sysmon@popbar/
+
+# For GNOME 45 and 46:
+cp sysmon@popbar/extension-modern.js ~/.local/share/gnome-shell/extensions/sysmon@popbar/extension.js
+
+# For GNOME 41, 42, 43, and 44:
+# cp sysmon@popbar/extension-legacy.js ~/.local/share/gnome-shell/extensions/sysmon@popbar/extension.js
 gnome-extensions enable sysmon@popbar
 # Restart GNOME Shell
 ```

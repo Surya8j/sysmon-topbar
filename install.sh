@@ -26,17 +26,31 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SRC_DIR="$SCRIPT_DIR/sysmon@popbar"
 
-if [ ! -f "$SRC_DIR/extension.js" ]; then
-    echo "[ERROR] extension.js not found in $SRC_DIR"
+if [ ! -f "$SRC_DIR/extension-legacy.js" ] || [ ! -f "$SRC_DIR/extension-modern.js" ]; then
+    echo "[ERROR] extension files not found in $SRC_DIR"
     echo "        Make sure you run this from the extracted folder."
     exit 1
 fi
 
-# Create target directory and copy files
 mkdir -p "$EXT_DIR"
 cp "$SRC_DIR/metadata.json" "$EXT_DIR/"
-cp "$SRC_DIR/extension.js" "$EXT_DIR/"
 cp "$SRC_DIR/stylesheet.css" "$EXT_DIR/"
+
+# Detect GNOME Shell Version
+GNOME_VERSION=$(gnome-shell --version | grep -oP '[0-9]+' | head -1)
+
+if [ -z "$GNOME_VERSION" ]; then
+    echo "[!] Could not determine GNOME Shell version. Assuming < 45."
+    GNOME_VERSION=44
+fi
+
+if [ "$GNOME_VERSION" -ge 45 ]; then
+    echo "[i] Detected GNOME $GNOME_VERSION (ESM required)"
+    cp "$SRC_DIR/extension-modern.js" "$EXT_DIR/extension.js"
+else
+    echo "[i] Detected GNOME $GNOME_VERSION (CJS required)"
+    cp "$SRC_DIR/extension-legacy.js" "$EXT_DIR/extension.js"
+fi
 
 echo "[✓] Files copied to $EXT_DIR"
 
