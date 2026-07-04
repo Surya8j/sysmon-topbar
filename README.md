@@ -3,8 +3,13 @@
 A lightweight, htop-style system monitor for the GNOME Shell top bar. Built for Pop!_OS.
 
 ![GNOME 41+](https://img.shields.io/badge/GNOME-41%20|%2042%20|%2043%20|%2044%20|%2045%20|%2046-blue)
+![macOS 13+](https://img.shields.io/badge/macOS-13%2B-black)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
 ![No sudo](https://img.shields.io/badge/install-no%20sudo-brightgreen)
+
+> 🍎 **On a Mac?** A native Swift port for the macOS menu bar lives in
+> [`macos/`](macos/) — per-core CPU bars, compact RAM gauge, and
+> start-at-login support. See [macos/README.md](macos/README.md).
 
 ## Features
 
