@@ -39,6 +39,16 @@ so it launches automatically at every login. To remove everything:
 ./uninstall.sh
 ```
 
+## Update
+
+To update an existing install, pull the latest code and re-run the installer —
+it rebuilds, swaps in the new binary, and restarts the running app in place:
+
+```sh
+git pull
+./install.sh
+```
+
 ## Run without installing
 
 ```sh

@@ -28,6 +28,17 @@ cd sysmon-topbar/macos
 
 This builds the app, copies the binary to `~/Library/Application Support/SysMonTopBar/`, and registers a LaunchAgent so it launches automatically at every login.
 
+## Update
+
+Already installed? Pull the latest code and re-run the installer — it rebuilds, swaps in the new binary, and restarts the running app in place:
+
+```sh
+cd sysmon-topbar
+git pull
+cd macos
+./install.sh
+```
+
 ## Uninstall
 
 ```sh
