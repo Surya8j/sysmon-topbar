@@ -29,6 +29,16 @@ Then restart GNOME Shell to see it:
 - **X11:** press `Alt+F2`, type `r`, press `Enter`
 - **Wayland:** log out and log back in
 
+## Update
+
+Already installed? Pull the latest code and re-run the installer, then restart GNOME Shell the same way as after installing:
+
+```bash
+cd sysmon-topbar
+git pull
+./install.sh
+```
+
 ## Uninstall
 
 ```bash
