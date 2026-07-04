@@ -1,8 +1,0 @@
-{
-  "name": "SysMon TopBar",
-  "description": "Lightweight system monitor for the top bar - CPU cores, RAM/Swap, Network throughput. Click to cycle views.",
-  "uuid": "sysmon@popbar",
-  "url": "",
-  "shell-version": ["41", "42", "43", "44", "45", "46"],
-  "version": 1
-}

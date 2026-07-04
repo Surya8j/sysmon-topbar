@@ -1,68 +1,49 @@
 # SysMon TopBar
 
-See your computer's CPU and memory usage at a glance, right in the top bar. Made for Pop!_OS and other GNOME Linux desktops.
+See your Mac's CPU and memory usage at a glance, right in the menu bar. A lightweight, native Swift app — no dependencies, no Dock icon.
 
-![GNOME 41+](https://img.shields.io/badge/GNOME-41%E2%80%9346-blue)
 ![macOS 13+](https://img.shields.io/badge/macOS-13%2B-black)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
-![No sudo](https://img.shields.io/badge/install-no%20sudo-brightgreen)
-
-> 🍎 **On a Mac?** There's a native version in [`macos/`](macos/) — see [macos/README.md](macos/README.md).
 
 ## What you get
 
-- **CPU view** — a tiny bar for each CPU core. Bars turn from green to yellow to red as your computer works harder.
-- **Memory view** — how much RAM you're using, htop-style: `Mem[||||    7.7G/30.3G]`
-- **Click** the display to switch between the two views.
-- **Hover** over it to see exact numbers.
+- **CPU view** — one thin vertical bar per core, htop-style colors: green (0–30%), cyan (30–60%), yellow (60–85%), red (85–100%)
+- **RAM view** — a small rounded gauge filled by usage (same color gradient) plus the used amount, e.g. `▬▭ 7.7G`
+- **GPU view** — overall GPU utilization as plain text, e.g. `GPU 14%`
+- **Left-click** the menu bar item to cycle CPU → RAM → GPU
+- **Hover** for a tooltip with exact per-core %, memory, swap, and GPU values
+- **Right-click** (or ⌃-click) for the Quit menu
 
-It's very light on your system (under 1% CPU, ~2MB RAM), matches your dark/light theme, and needs no admin password.
+It's very light on your system — plain AppKit plus Mach/sysctl APIs, polling every 2 seconds.
 
-## Install
+## Install (starts at login)
 
-```bash
+Requires macOS 13+ and the Swift toolchain — Apple's Command Line Tools are enough, no Xcode needed (if missing, run `xcode-select --install` first).
+
+```sh
 git clone https://github.com/Surya8j/sysmon-topbar.git
-cd sysmon-topbar
+cd sysmon-topbar/macos
 ./install.sh
 ```
 
-Then restart GNOME Shell to see it:
-- **X11:** press `Alt+F2`, type `r`, press `Enter`
-- **Wayland:** log out and log back in
+This builds the app, copies the binary to `~/Library/Application Support/SysMonTopBar/`, and registers a LaunchAgent so it launches automatically at every login.
 
 ## Uninstall
 
-```bash
+```sh
+cd sysmon-topbar/macos
 ./uninstall.sh
 ```
 
-…and restart GNOME Shell the same way.
+## Run without installing
 
-## Tweaks
-
-Want it to update faster or slower? Change `CPU_POLL_MS` / `RAM_POLL_MS` (milliseconds, default `2000` = 2 seconds) at the top of `sysmon@popbar/extension.js`.
-
-<details>
-<summary>How it works / manual install</summary>
-
-The extension simply reads `/proc/stat` (CPU) and `/proc/meminfo` (RAM) — no external tools, no background processes.
-
-Manual install, if you prefer not to use the script:
-
-```bash
-mkdir -p ~/.local/share/gnome-shell/extensions/sysmon@popbar
-cp sysmon@popbar/metadata.json sysmon@popbar/stylesheet.css \
-   ~/.local/share/gnome-shell/extensions/sysmon@popbar/
-
-# GNOME 45–46:
-cp sysmon@popbar/extension-modern.js \
-   ~/.local/share/gnome-shell/extensions/sysmon@popbar/extension.js
-# GNOME 41–44: use extension-legacy.js instead
-
-gnome-extensions enable sysmon@popbar
-# Restart GNOME Shell
+```sh
+cd macos
+swift build -c release
+.build/release/SysMonTopBar &
 ```
-</details>
+
+See [macos/README.md](macos/README.md) for more details.
 
 ## License
 
