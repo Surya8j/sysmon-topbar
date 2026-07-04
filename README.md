@@ -3,11 +3,10 @@
 See your computer's CPU and memory usage at a glance, right in the top bar. Made for Pop!_OS and other GNOME Linux desktops.
 
 ![GNOME 41+](https://img.shields.io/badge/GNOME-41%E2%80%9346-blue)
-![macOS 13+](https://img.shields.io/badge/macOS-13%2B-black)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
 ![No sudo](https://img.shields.io/badge/install-no%20sudo-brightgreen)
 
-> 🍎 **On a Mac?** There's a native version in [`macos/`](macos/) — see [macos/README.md](macos/README.md).
+> 🍎 **On a Mac?** The native macOS version lives on the [`main`](https://github.com/Surya8j/sysmon-topbar/tree/main) branch.
 
 ## What you get
 
@@ -21,7 +20,7 @@ It's very light on your system (under 1% CPU, ~2MB RAM), matches your dark/light
 ## Install
 
 ```bash
-git clone https://github.com/Surya8j/sysmon-topbar.git
+git clone -b linux https://github.com/Surya8j/sysmon-topbar.git
 cd sysmon-topbar
 ./install.sh
 ```
