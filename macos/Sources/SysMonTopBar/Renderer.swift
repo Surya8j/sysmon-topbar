@@ -72,9 +72,18 @@ enum Renderer {
         ])
     }
 
+    // MARK: - GPU view (plain percentage)
+
+    static func gpuTitle(utilization: Double) -> NSAttributedString {
+        NSAttributedString(string: String(format: "GPU %.0f%%", utilization * 100), attributes: [
+            .font: NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .medium),
+            .foregroundColor: NSColor.labelColor,
+        ])
+    }
+
     // MARK: - Tooltip
 
-    static func tooltip(cores: [Double], mem: MemoryStats) -> String {
+    static func tooltip(cores: [Double], mem: MemoryStats, gpu: Double?, gpuCores: Int?) -> String {
         var lines: [String] = []
 
         if !cores.isEmpty {
@@ -86,6 +95,11 @@ enum Renderer {
                 }
                 lines.append("  " + row.joined(separator: "  "))
             }
+        }
+
+        if let gpu {
+            let cores = gpuCores.map { " (\($0)-core)" } ?? ""
+            lines.append(String(format: "GPU %.0f%%%@", gpu * 100, cores))
         }
 
         lines.append(String(

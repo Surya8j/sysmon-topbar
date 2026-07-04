@@ -8,13 +8,17 @@ A lightweight macOS menu bar system monitor — a native Swift port of
 - **CPU view** — one thin vertical bar per core, htop-style colors:
   green (0–30%), cyan (30–60%), yellow (60–85%), red (85–100%)
 - **RAM view** — a small rounded gauge filled by usage (same color gradient) plus the used amount, e.g. `▬▭ 7.7G`
-- **Left-click** the menu bar item to toggle CPU ↔ RAM
-- **Hover** for a tooltip with exact per-core %, memory, and swap values
+- **GPU view** — overall GPU utilization as plain text, e.g. `GPU 14%`
+  (macOS exposes no per-core GPU counters, so this is a single number)
+- **Left-click** the menu bar item to cycle CPU → RAM → GPU
+- **Hover** for a tooltip with exact per-core %, memory, swap, and GPU values
 - **Right-click** (or ⌃-click) for the Quit menu
 
 Polls every 2 seconds (`pollInterval` in `StatusBarController.swift`).
-No dependencies — plain AppKit plus Mach/sysctl APIs (`host_processor_info`,
-`host_statistics64`, `vm.swapusage`).
+No dependencies — plain AppKit plus Mach/sysctl/IOKit APIs (`host_processor_info`,
+`host_statistics64`, `vm.swapusage`, and the `IOAccelerator` registry entry's
+`PerformanceStatistics` for GPU). On machines whose GPU driver publishes no
+utilization statistics, the GPU view is skipped automatically.
 
 ## Install (starts at login)
 

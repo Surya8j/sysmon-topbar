@@ -6,12 +6,13 @@ final class StatusBarController: NSObject {
     private static let pollInterval: TimeInterval = 2.0
 
     private enum View {
-        case cpu, ram
+        case cpu, ram, gpu
     }
 
     private let statusItem: NSStatusItem
     private let cpuSampler = CPUSampler()
     private let memorySampler = MemorySampler()
+    private let gpuSampler = GPUSampler()
     private var timer: Timer?
     private var currentView: View = .cpu
 
@@ -46,7 +47,11 @@ final class StatusBarController: NSObject {
         if event.type == .rightMouseUp || event.modifierFlags.contains(.control) {
             showMenu()
         } else {
-            currentView = currentView == .cpu ? .ram : .cpu
+            switch currentView {
+            case .cpu: currentView = .ram
+            case .ram: currentView = gpuSampler.sample() != nil ? .gpu : .cpu
+            case .gpu: currentView = .cpu
+            }
             refresh()
         }
     }
@@ -70,6 +75,7 @@ final class StatusBarController: NSObject {
     private func refresh() {
         let cores = cpuSampler.sample()
         let mem = memorySampler.sample()
+        let gpu = gpuSampler.sample()
         guard let button = statusItem.button else { return }
 
         button.imagePosition = .imageLeft
@@ -80,7 +86,12 @@ final class StatusBarController: NSObject {
         case .ram:
             button.image = Renderer.ramImage(mem)
             button.attributedTitle = Renderer.ramTitle(mem)
+        case .gpu:
+            button.image = nil
+            button.attributedTitle = Renderer.gpuTitle(utilization: gpu ?? 0)
         }
-        button.toolTip = Renderer.tooltip(cores: cores, mem: mem)
+        button.toolTip = Renderer.tooltip(
+            cores: cores, mem: mem, gpu: gpu, gpuCores: gpuSampler.coreCount
+        )
     }
 }
