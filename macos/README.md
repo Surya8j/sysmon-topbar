@@ -18,9 +18,12 @@ No dependencies — plain AppKit plus Mach/sysctl APIs (`host_processor_info`,
 
 ## Install (starts at login)
 
-Requires macOS 13+ and the Swift toolchain (Command Line Tools are enough, no Xcode needed).
+Requires macOS 13+ and the Swift toolchain — Apple's Command Line Tools are
+enough, no Xcode needed (if missing, run `xcode-select --install` first).
 
 ```sh
+git clone https://github.com/Surya8j/sysmon-topbar.git
+cd sysmon-topbar/macos
 ./install.sh
 ```
 
