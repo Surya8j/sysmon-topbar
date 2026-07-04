@@ -1,93 +1,68 @@
 # SysMon TopBar
 
-A lightweight, htop-style system monitor for the GNOME Shell top bar. Built for Pop!_OS.
+See your computer's CPU and memory usage at a glance, right in the top bar. Made for Pop!_OS and other GNOME Linux desktops.
 
-![GNOME 41+](https://img.shields.io/badge/GNOME-41%20|%2042%20|%2043%20|%2044%20|%2045%20|%2046-blue)
+![GNOME 41+](https://img.shields.io/badge/GNOME-41%E2%80%9346-blue)
 ![macOS 13+](https://img.shields.io/badge/macOS-13%2B-black)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
 ![No sudo](https://img.shields.io/badge/install-no%20sudo-brightgreen)
 
-> 🍎 **On a Mac?** A native Swift port for the macOS menu bar lives in
-> [`macos/`](macos/) — per-core CPU bars, compact RAM gauge, and
-> start-at-login support. See [macos/README.md](macos/README.md).
+> 🍎 **On a Mac?** There's a native version in [`macos/`](macos/) — see [macos/README.md](macos/README.md).
 
-## Features
+## What you get
 
-**CPU View** — Per-core vertical bar columns with htop color gradient:
-- `0–30%` green → `30–60%` cyan → `60–85%` yellow → `85–100%` red
-- Dim track behind each core bar
+- **CPU view** — a tiny bar for each CPU core. Bars turn from green to yellow to red as your computer works harder.
+- **Memory view** — how much RAM you're using, htop-style: `Mem[||||    7.7G/30.3G]`
+- **Click** the display to switch between the two views.
+- **Hover** over it to see exact numbers.
 
-**RAM View** — htop-style bracket bars with vertical pipe fills:
-```
-Mem[||||||||       7.7G/30.3G]
-Swp[||             0M/28.0G ]
-```
-- Green pipes for RAM, red pipes for swap
-- Used/total values shown alongside
-
-**Interactions:**
-- **Click** to cycle between CPU ↔ RAM views
-- **Hover** for a live-updating tooltip with exact values
-- Adapts to system dark/light theme automatically
-
-## Requirements
-
-- Pop!_OS 22.04+ (GNOME Shell 41-46)
-- No sudo required
+It's very light on your system (under 1% CPU, ~2MB RAM), matches your dark/light theme, and needs no admin password.
 
 ## Install
 
 ```bash
 git clone https://github.com/Surya8j/sysmon-topbar.git
 cd sysmon-topbar
-chmod +x install.sh
 ./install.sh
 ```
 
-Restart GNOME Shell:
-- **X11:** `Alt+F2` → type `r` → `Enter`
-- **Wayland:** Log out and log back in
-
-### Manual Install
-
-```bash
-mkdir -p ~/.local/share/gnome-shell/extensions/sysmon@popbar
-cp sysmon@popbar/metadata.json ~/.local/share/gnome-shell/extensions/sysmon@popbar/
-cp sysmon@popbar/stylesheet.css ~/.local/share/gnome-shell/extensions/sysmon@popbar/
-
-# For GNOME 45 and 46:
-cp sysmon@popbar/extension-modern.js ~/.local/share/gnome-shell/extensions/sysmon@popbar/extension.js
-
-# For GNOME 41, 42, 43, and 44:
-# cp sysmon@popbar/extension-legacy.js ~/.local/share/gnome-shell/extensions/sysmon@popbar/extension.js
-gnome-extensions enable sysmon@popbar
-# Restart GNOME Shell
-```
+Then restart GNOME Shell to see it:
+- **X11:** press `Alt+F2`, type `r`, press `Enter`
+- **Wayland:** log out and log back in
 
 ## Uninstall
 
 ```bash
-chmod +x uninstall.sh
 ./uninstall.sh
-# Restart GNOME Shell
 ```
 
-## Configuration
+…and restart GNOME Shell the same way.
 
-Edit the constants at the top of `sysmon@popbar/extension.js`:
+## Tweaks
 
-| Parameter     | Default | Description              |
-|---------------|---------|--------------------------|
-| `CPU_POLL_MS` | `2000`  | CPU refresh interval     |
-| `RAM_POLL_MS` | `2000`  | RAM refresh interval     |
+Want it to update faster or slower? Change `CPU_POLL_MS` / `RAM_POLL_MS` (milliseconds, default `2000` = 2 seconds) at the top of `sysmon@popbar/extension.js`.
 
-## How It Works
+<details>
+<summary>How it works / manual install</summary>
 
-Reads from procfs — zero external dependencies, no spawned processes:
-- **CPU:** `/proc/stat` — per-core usage via idle/total deltas
-- **RAM:** `/proc/meminfo` — MemTotal, MemAvailable, SwapTotal, SwapFree
+The extension simply reads `/proc/stat` (CPU) and `/proc/meminfo` (RAM) — no external tools, no background processes.
 
-Typical resource usage: <1% CPU, ~2MB RAM for the extension itself.
+Manual install, if you prefer not to use the script:
+
+```bash
+mkdir -p ~/.local/share/gnome-shell/extensions/sysmon@popbar
+cp sysmon@popbar/metadata.json sysmon@popbar/stylesheet.css \
+   ~/.local/share/gnome-shell/extensions/sysmon@popbar/
+
+# GNOME 45–46:
+cp sysmon@popbar/extension-modern.js \
+   ~/.local/share/gnome-shell/extensions/sysmon@popbar/extension.js
+# GNOME 41–44: use extension-legacy.js instead
+
+gnome-extensions enable sysmon@popbar
+# Restart GNOME Shell
+```
+</details>
 
 ## License
 
