@@ -1,3 +1,8 @@
+# macOS app build artifacts
+.build/
+.swiftpm/
+
+# archives & editor files
 *.tar.gz
 *.zip
 *.swp
