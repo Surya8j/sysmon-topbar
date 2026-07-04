@@ -31,8 +31,11 @@ final class MemorySampler {
             }
         }
         if kr == KERN_SUCCESS {
-            // active + wired + compressed approximates Activity Monitor's "Memory Used".
-            let pages = UInt64(vmStats.active_count)
+            // Activity Monitor's "Memory Used" = App Memory (internal minus
+            // purgeable) + wired + compressed. Counting active pages instead
+            // misses app pages on the inactive queue and drags in file cache.
+            let appPages = max(0, Int64(vmStats.internal_page_count) - Int64(vmStats.purgeable_count))
+            let pages = UInt64(appPages)
                 + UInt64(vmStats.wire_count)
                 + UInt64(vmStats.compressor_page_count)
             stats.used = pages * UInt64(vm_page_size)
